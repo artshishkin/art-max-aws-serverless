@@ -22,14 +22,27 @@ Resources:
         HelloWorld:
           Type: Api
           Properties:
+            RestApiId: !Ref AssignmentRestApi
             Path: /store-data
             Method: post
+
+  AssignmentRestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Name: Assignment 1 API
+      Description: Assignment API with POST Lambda and GET Mock Endpoints (with CORS Enabled)
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: assignment-max-1-Prod-oas30-apigateway.yaml
 
 Outputs:
   AssignmentApiStoreData:
     Description: "API Gateway endpoint URL for Prod stage for Store Data Lambda function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/store-data"
+    Value: !Sub "https://${AssignmentRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/store-data"
   AssignmentApiFetchData:
     Description: "API Gateway endpoint URL for Prod stage for Fetch Data Mock"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/fetch-data"
+    Value: !Sub "https://${AssignmentRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/fetch-data"
 
