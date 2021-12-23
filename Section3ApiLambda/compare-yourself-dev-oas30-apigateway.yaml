@@ -3,7 +3,7 @@ info:
   title: "compare-yourself"
   description: "AWS Serverless APIs &amp; Apps - A Complete Introduction - Tutorial\
     \ from Maximilian Schwarzmüller (Udemy)"
-  version: "2021-12-23T19:56:37Z"
+  version: "2021-12-23T21:19:14Z"
 servers:
 - url: "https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/{basePath}"
   variables:
@@ -31,6 +31,7 @@ paths:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
+        type: "aws"
         httpMethod: "POST"
         uri: "arn:aws:apigateway:eu-north-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-north-1:392971033516:function:cy-store-data/invocations"
         responses:
@@ -44,7 +45,23 @@ paths:
             \ $input.json('$.age')\n}"
         passthroughBehavior: "when_no_templates"
         contentHandling: "CONVERT_TO_TEXT"
+    delete:
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+      x-amazon-apigateway-integration:
         type: "aws"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:eu-north-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-north-1:392971033516:function:cy-delete-data/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        contentHandling: "CONVERT_TO_TEXT"
     options:
       responses:
         "200":
@@ -64,6 +81,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
+        type: "mock"
         responses:
           default:
             statusCode: "200"
@@ -74,7 +92,6 @@ paths:
         requestTemplates:
           application/json: "{\"statusCode\": 200}"
         passthroughBehavior: "when_no_match"
-        type: "mock"
 components:
   schemas:
     CompareData:
