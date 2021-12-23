@@ -3,7 +3,7 @@ info:
   title: "compare-yourself"
   description: "AWS Serverless APIs &amp; Apps - A Complete Introduction - Tutorial\
     \ from Maximilian Schwarzmüller (Udemy)"
-  version: "2021-12-23T10:23:12Z"
+  version: "2021-12-23T11:44:17Z"
 servers:
 - url: "https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/{basePath}"
   variables:
@@ -11,6 +11,23 @@ servers:
       default: "/dev"
 paths:
   /compare-yourself:
+    post:
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:eu-north-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-north-1:392971033516:function:cy-store-data/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        contentHandling: "CONVERT_TO_TEXT"
     options:
       responses:
         "200":
