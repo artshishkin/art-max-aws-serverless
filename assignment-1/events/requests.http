@@ -1,0 +1,19 @@
+### CORS Preflight Request to `store-data`
+OPTIONS   {{serverUrl}}/Prod/store-data
+Accept: application/json
+
+### CORS Preflight Request to `fetch-data`
+OPTIONS   {{serverUrl}}/Prod/fetch-data
+Accept: application/json
+
+### POST to `store-data`
+POST   {{serverUrl}}/Prod/store-data
+Content-Type: application/json
+Accept: application/json
+
+{}
+
+### GET to `fetch-data`
+GET   {{serverUrl}}/Prod/fetch-data
+Accept: application/json
+
