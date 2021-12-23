@@ -8,3 +8,18 @@ Content-Type: application/json
 Accept: application/json
 
 < input-user.json
+
+### POST Invalid data to `store-data`
+POST   {{serverUrl}}/Prod/store-data
+Content-Type: application/json
+Accept: application/json
+
+{
+  "height": 180,
+  "weight": 72,
+  "name": {
+    "firstname": "Art",
+    "lastname": "Shyshkin",
+    "nickname": "hedgehog"
+  }
+}
