@@ -64,5 +64,13 @@ xhr.send();
 }
 ```
 
+#####  44. Using Models & Validating Requests
 
+```json
+{
+  "age": 38,
+  "height": 180,
+  "income": 72
+}
+```
 

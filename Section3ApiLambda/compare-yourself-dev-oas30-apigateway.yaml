@@ -3,7 +3,7 @@ info:
   title: "compare-yourself"
   description: "AWS Serverless APIs &amp; Apps - A Complete Introduction - Tutorial\
     \ from Maximilian Schwarzmüller (Udemy)"
-  version: "2021-12-23T19:21:32Z"
+  version: "2021-12-23T19:56:37Z"
 servers:
 - url: "https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/{basePath}"
   variables:
@@ -12,6 +12,12 @@ servers:
 paths:
   /compare-yourself:
     post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompareData"
+        required: true
       responses:
         "200":
           description: "200 response"
@@ -23,6 +29,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Empty"
+      x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
         httpMethod: "POST"
         uri: "arn:aws:apigateway:eu-north-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-north-1:392971033516:function:cy-store-data/invocations"
@@ -33,8 +40,8 @@ paths:
               application/json: "{\n\"out-message\":$input.json('$.message'),\n\"\
                 user\" : \"$context.identity.user\"\n}\n"
         requestTemplates:
-          application/json: "{\n\"name\" : $input.json('$.personData.name'),\n\"age\"\
-            \ : $input.json('$.personData.age')\n}"
+          application/json: "{\n\"name\" : \"$context.identity.user\",\n\"age\" :\
+            \ $input.json('$.age')\n}"
         passthroughBehavior: "when_no_templates"
         contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
@@ -70,6 +77,24 @@ paths:
         type: "mock"
 components:
   schemas:
+    CompareData:
+      title: "CompareData"
+      required:
+      - "age"
+      - "height"
+      - "income"
+      type: "object"
+      properties:
+        age:
+          type: "integer"
+        height:
+          type: "integer"
+        income:
+          type: "integer"
     Empty:
       title: "Empty Schema"
       type: "object"
+x-amazon-apigateway-request-validators:
+  Validate body:
+    validateRequestParameters: false
+    validateRequestBody: true
