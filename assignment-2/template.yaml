@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  assignment-2
+
+  Sample SAM Template for assignment-2
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  StoreDataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: assignment-code/
+      Handler: store.lambdaHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId: !Ref AssignmentRestApi
+            Path: /store-data
+            Method: post
+
+  AssignmentRestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Name: Assignment 2 API
+      Description: Assignment API with POST Lambda and
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: Assignment 2 API-Prod-oas30-apigateway.yaml
+
+Outputs:
+  AssignmentApiStoreData:
+    Description: "API Gateway endpoint URL for Prod stage for Store Data Lambda function"
+    Value: !Sub "https://${AssignmentRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/store-data"
+

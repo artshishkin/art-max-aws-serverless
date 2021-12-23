@@ -1,0 +1,10 @@
+### CORS Preflight Request to `store-data`
+OPTIONS   {{serverUrl}}/Prod/store-data
+Accept: application/json
+
+### POST to `store-data`
+POST   {{serverUrl}}/Prod/store-data
+Content-Type: application/json
+Accept: application/json
+
+< input-user.json

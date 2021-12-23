@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "UserModel",
+  "type": "object",
+  "properties": {
+    "age": {
+      "type": "integer"
+    },
+    "height": {
+      "type": "integer"
+    },
+    "weight": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "object",
+      "properties": {
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
+        }
+      },
+      "required": ["firstname","lastname"]
+    }
+  },
+  "required": [
+    "age",
+    "height",
+    "name"
+  ]
+}

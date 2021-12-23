@@ -1,0 +1,10 @@
+{
+  "age": 38,
+  "height": 180,
+  "weight": 72,
+  "name": {
+    "firstname": "Art",
+    "lastname": "Shyshkin",
+    "nickname": "hedgehog"
+  }
+}
