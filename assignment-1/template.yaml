@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  assignment-1
+
+  Sample SAM Template for assignment-1
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  StoreDataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: assignment-code/
+      Handler: store.lambdaHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /store-data
+            Method: post
+
+Outputs:
+  AssignmentApiStoreData:
+    Description: "API Gateway endpoint URL for Prod stage for Store Data Lambda function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/store-data"
+  AssignmentApiFetchData:
+    Description: "API Gateway endpoint URL for Prod stage for Fetch Data Mock"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/fetch-data"
+
