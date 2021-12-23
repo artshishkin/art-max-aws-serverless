@@ -31,8 +31,23 @@ exports.handler = (event, context, callback) => {
 };
 ```    
 
+#####  35. Accessing the API from the Web & Fixing CORS Issues
 
-
-
-
+-  go to [codepen.io](https://codepen.io/)
+-  Getting Started
+-  JS -> Settings -> Behaviour -> Auto-Updating Preview -> Off -> Will appear Run button
+```javascript
+var xhr = new XMLHttpRequest();
+xhr.open('POST','https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself');
+xhr.onreadystatechange = function(event) {
+  console.log(event.target.response);
+}
+xhr.send();
+```
+-  Run
+-  Got an error -> Ctrl+Shift+I
+    -  `Access to XMLHttpRequest at 'https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself' from origin 'https://cdpn.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.`
+-  Add `Access-Control-Allow-Origin` Header to POST Method
+    -  Method Response -> 200 -> Add Header -> `Access-Control-Allow-Origin`
+    -  Integration Response -> 200 -> Header Mappings -> `Access-Control-Allow-Origin` -> ` '*' `
 
