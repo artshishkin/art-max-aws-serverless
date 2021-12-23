@@ -51,3 +51,18 @@ xhr.send();
     -  Method Response -> 200 -> Add Header -> `Access-Control-Allow-Origin`
     -  Integration Response -> 200 -> Header Mappings -> `Access-Control-Allow-Origin` -> ` '*' `
 
+#####  40. Extracting Request Data with Body Mapping Templates
+
+-  [API Gateway mapping template and access logging variable reference](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html)
+
+```json
+{
+    "personData":{
+        "name":"Art",
+        "age":38
+    }
+}
+```
+
+
+

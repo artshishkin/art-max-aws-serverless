@@ -1,4 +1,6 @@
 exports.handler = (event, context, callback) => {
-    // TODO implement
-    callback(null, {headers: {'Access-Control-Allow-Origin': '*'}});
+    let {name, age} = event;
+    let message = name + ' ' + age;
+    let result = {'message': message};
+    callback(null, result);
 };

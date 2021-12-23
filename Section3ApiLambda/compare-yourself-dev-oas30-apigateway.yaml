@@ -3,7 +3,7 @@ info:
   title: "compare-yourself"
   description: "AWS Serverless APIs &amp; Apps - A Complete Introduction - Tutorial\
     \ from Maximilian Schwarzmüller (Udemy)"
-  version: "2021-12-23T18:07:15Z"
+  version: "2021-12-23T19:03:45Z"
 servers:
 - url: "https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/{basePath}"
   variables:
@@ -29,9 +29,12 @@ paths:
         responses:
           default:
             statusCode: "200"
-        passthroughBehavior: "when_no_match"
+        requestTemplates:
+          application/json: "{\n\"name\" : $input.json('$.personData.name'),\n\"age\"\
+            \ : $input.json('$.personData.age')\n}"
+        passthroughBehavior: "when_no_templates"
         contentHandling: "CONVERT_TO_TEXT"
-        type: "aws_proxy"
+        type: "aws"
     options:
       responses:
         "200":
