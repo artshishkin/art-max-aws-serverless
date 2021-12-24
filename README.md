@@ -86,4 +86,18 @@ xhr.send();
 -  Default other
 -  Create table
 
+#####  62. Creating and Scanning Items
+
+1.  Create Item
+    -  UserId: `someUserId123`
+    -  Add new Attribute
+    -  Number -> Age: 38
+    -  Number -> Height: 180
+    -  Number -> Income: 2500
+    -  Create
+2.  Scan
+    -  can scan through all data and filter result by attribute (field) values
+3.  Query
+    -  by partition key
+    
 
