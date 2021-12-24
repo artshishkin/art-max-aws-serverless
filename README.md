@@ -74,3 +74,16 @@ xhr.send();
 }
 ```
 
+####  Section 4: Data Storage with DynamoDB
+
+#####  59.1 Creating a Table in DynamoDB - Manually
+
+-  Create Table
+-  Table name: `compare-yourself`
+-  Partition key:
+    -  `UserId`
+    -  String
+-  Default other
+-  Create table
+
+
