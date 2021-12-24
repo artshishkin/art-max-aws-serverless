@@ -71,6 +71,13 @@ Resources:
             Path: /compare-yourself/{type}
             Method: get
 
+  CompareYourselfTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: UserId
+        Type: String
+
 Outputs:
   CompareYourselfRestApi:
     Description: "API Gateway endpoint URL for Prod stage"
