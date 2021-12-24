@@ -100,4 +100,15 @@ xhr.send();
 3.  Query
     -  by partition key
     
+#####  67. Setting Permissions Right
+
+-  modify lambda role `cy-store-data-role-h7nn30v6`
+-  attach policy `AmazonDynamoDBFullAccess` (for simplicity)
+-  test -> Success
+-  visit DynamoDB -> item added 
+
+
+
+
+
 
