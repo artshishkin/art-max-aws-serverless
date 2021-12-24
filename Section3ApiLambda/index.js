@@ -6,10 +6,10 @@ exports.handler = (event, context, callback) => {
     const params = {
         TableName: 'compare-yourself',
         Item: {
-            'UserId': {S: "blabla7387483"},
-            'Age': {N: "38"},
-            'Height': {N: "180"},
-            'Income': {N: "2500"}
+            'UserId': {S: "user_" + Math.random()},
+            'Age': {N: event.age},
+            'Height': {N: event.height},
+            'Income': {N: event.income}
         }
     };
 
