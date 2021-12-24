@@ -3,7 +3,7 @@ info:
   title: "compare-yourself"
   description: "AWS Serverless APIs &amp; Apps - A Complete Introduction - Tutorial\
     \ from Maximilian Schwarzmüller (Udemy)"
-  version: "2021-12-24T13:46:31Z"
+  version: "2021-12-24T15:20:09Z"
 servers:
 - url: "https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/{basePath}"
   variables:
@@ -39,9 +39,6 @@ paths:
             statusCode: "200"
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
-            responseTemplates:
-              application/json: "{\n\"out-message\":$input.json('$.message'),\n\"\
-                user\" : \"$context.identity.user\"\n}\n"
         requestTemplates:
           application/json: "#set($userData=$input.path('$'))\n{\n\"age\" : \"$userData.age\"\
             ,\n\"height\" : \"$userData.height\",\n\"income\" : \"$userData.income\"\

@@ -4,4 +4,4 @@ xhr.onreadystatechange = function (event) {
     console.log(event.target.response);
 }
 xhr.setRequestHeader('Content-Type', 'application/json');
-xhr.send(JSON.stringify({age: 38, height: 180, income: 2500}));
+xhr.send(JSON.stringify({age: 32, height: 175, income: 1500}));
