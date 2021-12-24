@@ -1,0 +1,31 @@
+### CORS Preflight Request to `compare-youself`
+OPTIONS {{serverUrl}}/compare-yourself
+Accept: application/json
+
+### POST to `compare-youself`
+POST {{serverUrl}}/compare-yourself
+Content-Type: application/json
+Accept: application/json
+
+{
+  "age": 38,
+  "height": 180,
+  "income": 1000
+}
+
+### CORS Preflight request to results
+OPTIONS {{serverUrl}}/compare-yourself/fooBuzzBar
+Accept: application/json
+
+### GET all results
+GET {{serverUrl}}/compare-yourself/all
+Accept: application/json
+
+### GET single result
+GET {{serverUrl}}/compare-yourself/single
+Accept: application/json
+
+### GET wrong type - 400
+GET {{serverUrl}}/compare-yourself/absend
+Accept: application/json
+
