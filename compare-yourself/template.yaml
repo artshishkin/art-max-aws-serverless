@@ -8,6 +8,13 @@ Description: >
 Globals:
   Function:
     Timeout: 3
+    CodeUri: app-code/
+    Runtime: nodejs14.x
+    Architectures:
+      - x86_64
+    Environment:
+      Variables:
+        COMPARE_YOURSELF_TABLE: !Ref CompareYourselfTable
 
 Resources:
 
@@ -26,17 +33,10 @@ Resources:
   StoreDataFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: app-code/
       Handler: store-data.handler
-      Runtime: nodejs14.x
-      Architectures:
-        - x86_64
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref CompareYourselfTable
-      Environment:
-        Variables:
-          COMPARE_YOURSELF_TABLE: !Ref CompareYourselfTable
       Events:
         StoreData:
           Type: Api
@@ -48,11 +48,7 @@ Resources:
   DeleteDataFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: app-code/
       Handler: delete-data.handler
-      Runtime: nodejs14.x
-      Architectures:
-        - x86_64
       Events:
         DeleteData:
           Type: Api
@@ -64,11 +60,7 @@ Resources:
   GetDataFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: app-code/
       Handler: get-data.handler
-      Runtime: nodejs14.x
-      Architectures:
-        - x86_64
       Events:
         GetData:
           Type: Api
