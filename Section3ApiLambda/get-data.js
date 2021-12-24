@@ -7,17 +7,17 @@ exports.handler = async (event) => {
     if (type ==='all') {
         response = {
             statusCode: 200,
-            body: JSON.stringify('Return all results'),
+            body: 'Return all results'
         };
     } else if (type === 'single'){
         response = {
             statusCode: 200,
-            body: JSON.stringify('Return single result'),
+            body: 'Return single result'
         };
     } else {
         response = {
             statusCode: 400,
-            body: JSON.stringify('Wrong type parameter: ' + type + '. Must be `all` or `single`.'),
+            body: 'Wrong type parameter: ' + type + '. Must be `all` or `single`.'
         };
     }
 
