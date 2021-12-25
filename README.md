@@ -107,7 +107,27 @@ xhr.send();
 -  test -> Success
 -  visit DynamoDB -> item added 
 
+#####  71.1 Improving the IAM Permissions
 
+1.  Create Policy for storing data
+    -  IAM ->  Policies -> Create Policy
+    -  Service: DynamoDB
+    -  Action: PutItem
+    -  Resource: `arn:aws:dynamodb:eu-north-1:392971033516:table/compare-yourself`
+    -  Name: `cy-dynamodb-putitem`
+    -  Create
+2.  Detach FullAccess Policy from `cy-store-data-role-h7nn30v6`
+3.  Attach `cy-dynamodb-putitem` policy to `cy-store-data-role-h7nn30v6`
+4.  Create Policy for Fetching Data
+    -  Actions: 
+        -  Scan
+        -  GetItem
+    -  Resource:
+       -  `arn:aws:dynamodb:eu-north-1:392971033516:table/compare-yourself/index/*`
+       -  `arn:aws:dynamodb:eu-north-1:392971033516:table/compare-yourself`
+    -  Name: `cy-dynamodb-fetch`
+5.  Detach `AmazonDynamoDBReadOnlyAccess` from `cy-get-data-...` role
+6.  Attach `cy-dynamodb-fetch`
 
 
 
