@@ -53,6 +53,13 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: delete-data.handler
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:DeleteItem'
+              Resource: !GetAtt CompareYourselfTable.Arn
       Events:
         DeleteData:
           Type: Api
