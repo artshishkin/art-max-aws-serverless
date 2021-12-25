@@ -3,7 +3,7 @@ info:
   title: "compare-yourself"
   description: "AWS Serverless APIs &amp; Apps - A Complete Introduction - Tutorial\
     \ from Maximilian Schwarzmüller (Udemy)"
-  version: "2021-12-24T15:20:09Z"
+  version: "2021-12-25T15:00:44Z"
 servers:
 - url: "https://6zlxd52ys6.execute-api.eu-north-1.amazonaws.com/{basePath}"
   variables:
@@ -31,7 +31,6 @@ paths:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
-        type: "aws"
         httpMethod: "POST"
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${StoreDataFunction.Arn}/invocations"
@@ -46,6 +45,7 @@ paths:
             \n}"
         passthroughBehavior: "when_no_templates"
         contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
     delete:
       responses:
         "200":
@@ -59,7 +59,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
-        type: "aws"
         httpMethod: "POST"
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteDataFunction.Arn}/invocations"
@@ -70,6 +69,7 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         passthroughBehavior: "when_no_match"
         contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
     options:
       responses:
         "200":
@@ -89,7 +89,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
-        type: "mock"
         responses:
           default:
             statusCode: "200"
@@ -100,6 +99,7 @@ paths:
         requestTemplates:
           application/json: "{\"statusCode\": 200}"
         passthroughBehavior: "when_no_match"
+        type: "mock"
   /compare-yourself/{type}:
     get:
       parameters:
@@ -118,9 +118,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Empty"
+                $ref: "#/components/schemas/CompareDataArray"
       x-amazon-apigateway-integration:
-        type: "aws"
         httpMethod: "POST"
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetDataFunction.Arn}/invocations"
@@ -129,10 +128,16 @@ paths:
             statusCode: "200"
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: "#set($inputRoot = $input.path('$'))\n[\n\n#foreach($elem\
+                \ in $inputRoot)\n {\n  \"age\" : $elem.age,\n  \"height\" : $elem.height,\n\
+                \  \"income\" : $elem.income\n} \n#if($foreach.hasNext),#end\n#end\n\
+                ]"
         requestTemplates:
           application/json: "{\n  \"type\" : \"$input.params('type')\"\n}"
         passthroughBehavior: "when_no_templates"
         contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
     options:
       parameters:
       - name: "type"
@@ -158,7 +163,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
-        type: "mock"
         responses:
           default:
             statusCode: "200"
@@ -169,6 +173,7 @@ paths:
         requestTemplates:
           application/json: "{\"statusCode\": 200}"
         passthroughBehavior: "when_no_match"
+        type: "mock"
 components:
   schemas:
     CompareData:
@@ -188,6 +193,22 @@ components:
     Empty:
       title: "Empty Schema"
       type: "object"
+    CompareDataArray:
+      title: "CompareDataArray"
+      type: "array"
+      items:
+        required:
+        - "age"
+        - "height"
+        - "income"
+        type: "object"
+        properties:
+          age:
+            type: "integer"
+          height:
+            type: "integer"
+          income:
+            type: "integer"
 x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false

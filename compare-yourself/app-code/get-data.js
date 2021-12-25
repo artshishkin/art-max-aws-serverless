@@ -54,7 +54,7 @@ exports.handler = (event, context, callback) => {
                     height: +data.Item.Height.N,
                     income: +data.Item.Income.N
                 };
-                callback(null, item);
+                callback(null, [item]);
             }
         });
 

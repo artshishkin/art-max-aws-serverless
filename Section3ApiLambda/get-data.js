@@ -38,7 +38,7 @@ exports.handler = (event, context, callback) => {
         let params = {
             Key: {
                 "UserId": {
-                    S: "someUserId123"
+                    S: "blabla7387483"
                 }
             },
             TableName: tableName
@@ -54,7 +54,7 @@ exports.handler = (event, context, callback) => {
                     height: +data.Item.Height.N,
                     income: +data.Item.Income.N
                 };
-                callback(null, item);
+                callback(null, [item]);
             }
         });
 
