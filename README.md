@@ -129,6 +129,12 @@ xhr.send();
 5.  Detach `AmazonDynamoDBReadOnlyAccess` from `cy-get-data-...` role
 6.  Attach `cy-dynamodb-fetch`
 
+####  Section 5: Authenticating Users with Cognito and API Gateway Authorizers
+
+#####  83. Creating a Custom Authorizer Function
+
+-  Create Lambda Function: `cy-custom-auth`
+-  [Input to an Amazon API Gateway Lambda authorizer](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-input.html)
 
 
 
