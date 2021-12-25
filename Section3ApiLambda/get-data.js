@@ -18,8 +18,16 @@ exports.handler = (event, context, callback) => {
                 console.log("Error", err);
                 callback(err);
             } else {
-                console.log("Success", data);
-                callback(null, data);
+
+                const items = data.Items.map(item => {
+                        return {
+                            age: +item.Age.N,
+                            height: +item.Height.N,
+                            income: +item.Income.N
+                        };
+                    }
+                );
+                callback(null, items);
             }
         });
 
