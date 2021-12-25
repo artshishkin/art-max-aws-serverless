@@ -35,8 +35,12 @@ Resources:
     Properties:
       Handler: store-data.handler
       Policies:
-        - DynamoDBCrudPolicy:
-            TableName: !Ref CompareYourselfTable
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:PutItem'
+              Resource: !GetAtt CompareYourselfTable.Arn
       Events:
         StoreData:
           Type: Api
