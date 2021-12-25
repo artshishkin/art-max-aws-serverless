@@ -1,17 +1,19 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB({region: 'eu-north-1', apiVersion: '2012-08-10'});
 
+const tableName = 'compare-yourself';
+
 exports.handler = (event, context, callback) => {
 
     const type = event.type;
 
     let response;
 
-    const params = {
-        TableName: 'compare-yourself'
-    };
-
     if (type === 'all') {
+
+        const params = {
+            TableName: tableName
+        };
 
         dynamodb.scan(params, function (err, data) {
             if (err) {
@@ -32,11 +34,30 @@ exports.handler = (event, context, callback) => {
         });
 
     } else if (type === 'single') {
-        response = {
-            statusCode: 200,
-            body: 'Return single result'
+
+        let params = {
+            Key: {
+                "UserId": {
+                    S: "someUserId123"
+                }
+            },
+            TableName: tableName
         };
-        callback(null, response);
+
+        dynamodb.getItem(params, function (err, data) {
+            if (err) {
+                console.log("Error", err);
+                callback(err);
+            } else {
+                const item = {
+                    age: +data.Item.Age.N,
+                    height: +data.Item.Height.N,
+                    income: +data.Item.Income.N
+                };
+                callback(null, item);
+            }
+        });
+
     } else {
         response = {
             statusCode: 400,

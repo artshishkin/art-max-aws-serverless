@@ -9,11 +9,11 @@ exports.handler = (event, context, callback) => {
 
     let response;
 
-    const params = {
-        TableName: tableName
-    };
-
     if (type === 'all') {
+
+        const params = {
+            TableName: tableName
+        };
 
         dynamodb.scan(params, function (err, data) {
             if (err) {
@@ -34,11 +34,30 @@ exports.handler = (event, context, callback) => {
         });
 
     } else if (type === 'single') {
-        response = {
-            statusCode: 200,
-            body: 'Return single result'
+
+        let params = {
+            Key: {
+                "UserId": {
+                    S: "user_0.24392722883765883"
+                }
+            },
+            TableName: tableName
         };
-        callback(null, response);
+
+        dynamodb.getItem(params, function (err, data) {
+            if (err) {
+                console.log("Error", err);
+                callback(err);
+            } else {
+                const item = {
+                    age: +data.Item.Age.N,
+                    height: +data.Item.Height.N,
+                    income: +data.Item.Income.N
+                };
+                callback(null, item);
+            }
+        });
+
     } else {
         response = {
             statusCode: 400,
