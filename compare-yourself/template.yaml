@@ -61,6 +61,9 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: get-data.handler
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref CompareYourselfTable
       Events:
         GetData:
           Type: Api
