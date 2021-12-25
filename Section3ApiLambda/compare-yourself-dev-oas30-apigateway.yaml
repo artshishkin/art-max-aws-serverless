@@ -3,7 +3,7 @@ info:
   title: "compare-yourself"
   description: "AWS Serverless APIs &amp; Apps - A Complete Introduction - Tutorial\
     \ from Maximilian Schwarzmüller (Udemy)"
-  version: "2021-12-25T15:00:44Z"
+  version: "2021-12-25T21:31:55Z"
 servers:
 - url: "https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/{basePath}"
   variables:
@@ -29,6 +29,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Empty"
+      security:
+      - simple-custom-auth: []
       x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
         httpMethod: "POST"
@@ -206,6 +208,16 @@ components:
             type: "integer"
           income:
             type: "integer"
+  securitySchemes:
+    simple-custom-auth:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
+      x-amazon-apigateway-authtype: "custom"
+      x-amazon-apigateway-authorizer:
+        authorizerUri: "arn:aws:apigateway:eu-north-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-north-1:392971033516:function:cy-custom-auth/invocations"
+        authorizerResultTtlInSeconds: 0
+        type: "token"
 x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false

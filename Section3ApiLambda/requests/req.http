@@ -2,15 +2,39 @@
 OPTIONS https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself
 Accept: application/json
 
-### POST to `compare-youself`
+### POST to `compare-youself` - allow
+POST https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself
+Content-Type: application/json
+Accept: application/json
+Authorization: allow
+
+{
+  "age": {{$randomInt}},
+  "height": {{$randomInt}},
+  "income": {{$randomInt}}
+}
+
+### POST to `compare-youself` - deny
+POST https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself
+Content-Type: application/json
+Accept: application/json
+Authorization: deny
+
+{
+  "age": {{$randomInt}},
+  "height": {{$randomInt}},
+  "income": {{$randomInt}}
+}
+
+### POST to `compare-youself` - Unauthorized
 POST https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself
 Content-Type: application/json
 Accept: application/json
 
 {
-  "age": 38,
-  "height": 180,
-  "income": 1000
+  "age": {{$randomInt}},
+  "height": {{$randomInt}},
+  "income": {{$randomInt}}
 }
 
 ### CORS Preflight request to results
