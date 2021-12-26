@@ -177,6 +177,9 @@ xhr.send();
 -  `npm start`
 -  visit `http://localhost:4200/`
 
+#####  96. Adding Signup to the Frontend App
 
+-  use `amazon-cognito-identity-js`
+-  [Amazon Cognito Identity SDK for JavaScript](https://www.npmjs.com/package/amazon-cognito-identity-js)
 
 
