@@ -5,7 +5,7 @@ import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
-import {CognitoUser, CognitoUserAttribute, CognitoUserPool} from 'amazon-cognito-identity-js';
+import {AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPool} from 'amazon-cognito-identity-js';
 
 import {User} from './user.model';
 
@@ -91,7 +91,35 @@ export class AuthService {
       Username: username,
       Password: password
     };
-    this.authStatusChanged.next(true);
+
+    const authDetails = new AuthenticationDetails(authData);
+
+    const userData = {
+      Username: username,
+      Pool: userPool,
+    };
+    const cognitoUser = new CognitoUser(userData);
+
+    cognitoUser.authenticateUser(authDetails, {
+      onSuccess: (result) => {
+
+        this.authStatusChanged.next(true);
+        this.authDidFail.next(false);
+        this.authIsLoading.next(false);
+
+        console.log(result);
+
+        let accessToken = result.getAccessToken();
+        let refreshToken = result.getRefreshToken();
+        let idToken = result.getIdToken();
+      },
+      onFailure: (err => {
+        this.authDidFail.next(true);
+        this.authIsLoading.next(false);
+        console.log(err.message || JSON.stringify(err));
+      })
+    });
+
     return;
   }
 
