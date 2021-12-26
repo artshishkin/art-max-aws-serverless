@@ -136,5 +136,42 @@ xhr.send();
 -  Create Lambda Function: `cy-custom-auth`
 -  [Input to an Amazon API Gateway Lambda authorizer](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-input.html)
 
+#####  91. Creating a Cognito User Pool
+
+-  Create new User Pool
+-  Name: `compare-yourself`
+-  Step through settings
+-  Attributes   
+    -  Username
+    -  Also allow sign in with verified email address
+    -  Which standard attributes do you want to require
+        -  email
+    -  Next
+-  Security
+    -  Password strength
+        -  Min length: 6
+        -  Untick all (for study purpose)
+    -  Allow users to sign themselves up
+-  MFA and verifications
+    -  Which attributes do you want to verify? -> email
+-  Message customizations -> leave defaults
+-  Devices
+    -  Remember -> No
+-  App clients -> Add
+    -  Name: `compare-yourself-angular`
+    -  Access token expiration: 5min (for testing)
+    -  Generate client secret: **NO**
+    -  Auth Flows Configuration:
+        -  ALLOW_ADMIN_USER_PASSWORD_AUTH: false
+        -  ALLOW_CUSTOM_AUTH: true
+        -  ALLOW_USER_PASSWORD_AUTH: true
+        -  ALLOW_USER_SRP_AUTH: true
+        -  ALLOW_REFRESH_TOKEN_AUTH: true
+    -  Create app client
+-  Triggers -> leave empty
+-  Create pool
+
+
+
 
 
