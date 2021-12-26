@@ -171,6 +171,11 @@ xhr.send();
 -  Triggers -> leave empty
 -  Create pool
 
+#####  94. Adding Cognito to a Frontend App - Getting Started
+
+-  `npm install`
+-  `npm start`
+-  visit `http://localhost:4200/`
 
 
 
