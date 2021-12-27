@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 
 import {CompareData} from './compare-data.model';
 import {AuthService} from '../user/auth.service';
+import {environment} from "../../environments/environment";
 
 @Injectable()
 export class CompareService {
@@ -14,6 +15,8 @@ export class CompareService {
   dataLoaded = new Subject<CompareData[]>();
   dataLoadFailed = new Subject<boolean>();
   userData: CompareData;
+
+  private serverUrl = environment.serverUrl;
 
   constructor(private http: Http,
               private authService: AuthService) {
@@ -30,7 +33,7 @@ export class CompareService {
       }
       let idToken = session.getIdToken().getJwtToken();
 
-      this.http.post('https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself', data, {
+      this.http.post(`${this.serverUrl}/compare-yourself`, data, {
         headers: new Headers({'Authorization': idToken})
       })
         .subscribe(
@@ -57,31 +60,42 @@ export class CompareService {
     if (!all) {
       urlParam = 'single';
     }
-    this.http.get('https://API_ID.execute-api.REGION.amazonaws.com/dev/' + urlParam + queryParam, {
-      headers: new Headers({'Authorization': 'XXX'})
-    })
-      .map(
-        (response: Response) => response.json()
-      )
-      .subscribe(
-        (data) => {
-          if (all) {
-            this.dataLoaded.next(data);
-          } else {
-            console.log(data);
-            if (!data) {
-              this.dataLoadFailed.next(true);
-              return;
+
+    this.authService.getAuthenticatedUser().getSession((err, session) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      const idToken = session.getIdToken().getJwtToken();
+      const accessToken = session.getAccessToken().getJwtToken();
+      queryParam = `?accessToken=${accessToken}`
+
+      this.http.get(`${this.serverUrl}/compare-yourself/${urlParam}${queryParam}`, {
+        headers: new Headers({'Authorization': idToken})
+      })
+        .map(
+          (response: Response) => response.json()
+        )
+        .subscribe(
+          (data) => {
+            if (all) {
+              this.dataLoaded.next(data);
+            } else {
+              console.log(data);
+              if (!data) {
+                this.dataLoadFailed.next(true);
+                return;
+              }
+              this.userData = data[0];
+              this.dataEdited.next(true);
             }
-            this.userData = data[0];
-            this.dataEdited.next(true);
+          },
+          (error) => {
+            this.dataLoadFailed.next(true);
+            this.dataLoaded.next(null);
           }
-        },
-        (error) => {
-          this.dataLoadFailed.next(true);
-          this.dataLoaded.next(null);
-        }
-      );
+        );
+    });
   }
 
   onDeleteData() {
