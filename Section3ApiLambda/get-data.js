@@ -1,11 +1,15 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB({region: 'eu-north-1', apiVersion: '2012-08-10'});
 
+const cisp = new AWS.CognitoIdentityServiceProvider({apiVersion: '2016-04-18'});
+
 const tableName = 'compare-yourself';
 
 exports.handler = (event, context, callback) => {
 
     const type = event.type;
+
+    const accessToken = event.accessToken;
 
     let response;
 
@@ -35,26 +39,38 @@ exports.handler = (event, context, callback) => {
 
     } else if (type === 'single') {
 
-        let params = {
-            Key: {
-                "UserId": {
-                    S: "blabla7387483"
-                }
-            },
-            TableName: tableName
-        };
+        const cispParams = {"AccessToken": accessToken};
+        cisp.getUser(cispParams, (err, result) => {
 
-        dynamodb.getItem(params, function (err, data) {
             if (err) {
-                console.log("Error", err);
+                console.log(err);
                 callback(err);
             } else {
-                const item = {
-                    age: +data.Item.Age.N,
-                    height: +data.Item.Height.N,
-                    income: +data.Item.Income.N
+                console.log(result);
+                const userId = result.UserAttributes[0].Value;
+
+                let params = {
+                    Key: {
+                        "UserId": {
+                            S: userId
+                        }
+                    },
+                    TableName: tableName
                 };
-                callback(null, [item]);
+
+                dynamodb.getItem(params, function (err, data) {
+                    if (err) {
+                        console.log("Error", err);
+                        callback(err);
+                    } else {
+                        const item = {
+                            age: +data.Item.Age.N,
+                            height: +data.Item.Height.N,
+                            income: +data.Item.Income.N
+                        };
+                        callback(null, [item]);
+                    }
+                });
             }
         });
 
