@@ -56,3 +56,7 @@ GET {{serverUrl}}/compare-yourself/absend
 Accept: application/json
 Authorization: Bearer {{idToken}}
 
+### DELETE user's result
+DELETE {{serverUrl}}/compare-yourself
+Accept: application/json
+Authorization: Bearer {{idToken}}

@@ -100,14 +100,23 @@ export class CompareService {
 
   onDeleteData() {
     this.dataLoadFailed.next(false);
-    this.http.delete('https://API_ID.execute-api.REGION.amazonaws.com/dev/', {
-      headers: new Headers({'Authorization': 'XXX'})
-    })
-      .subscribe(
-        (data) => {
-          console.log(data);
-        },
-        (error) => this.dataLoadFailed.next(true)
-      );
+
+    this.authService.getAuthenticatedUser().getSession((err, session) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      const idToken = session.getIdToken().getJwtToken();
+
+      this.http.delete(`${this.serverUrl}/compare-yourself`, {
+        headers: new Headers({'Authorization': idToken})
+      })
+        .subscribe(
+          (data) => {
+            console.log(data);
+          },
+          (error) => this.dataLoadFailed.next(true)
+        );
+    });
   }
 }
