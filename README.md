@@ -182,4 +182,28 @@ xhr.send();
 -  use `amazon-cognito-identity-js`
 -  [Amazon Cognito Identity SDK for JavaScript](https://www.npmjs.com/package/amazon-cognito-identity-js)
 
+#####  100. Using a Cognito Authorizer with API Gateway
+
+1.  Create Cognito Authorizer
+    -  Gateway Console
+    -  Authorizers -> Create New Authorizer
+    -  Name: `compare-yourself-user-pool`
+    -  Type: `Cognito`
+    -  Cognito User Pool: `compare-yourself`
+    -  Token Source: Authorization
+2.  Test it
+    -  Test       
+    -  Authorization: {{JWT ID token}} (get via Sign In)
+    -  **or**   
+    -  Authorization: Bearer {{JWT ID token}}
+3.  Attach Authorizer to Endpoint
+    -  POST, DELETE, GET (**not** OPTIONS)
+    -  Method Request
+    -  Authorization: `compare-yourself-user-pool`
+4.  Deploy    
+
+
+
+
+
 
