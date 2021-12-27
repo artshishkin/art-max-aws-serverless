@@ -202,6 +202,19 @@ xhr.send();
     -  Authorization: `compare-yourself-user-pool`
 4.  Deploy    
 
+#####  101. Passing the right User ID to Lambda
+
+Change Request Mapping Template
+-  "userId": "$context.authorizer.claims.sub"
+```json
+#set($userData=$input.path('$'))
+{
+    "userId": "$context.authorizer.claims.sub",
+    "age" : "$userData.age",
+    "height" : "$userData.height",
+    "income" : "$userData.income"
+}
+```
 
 
 

@@ -1,12 +1,12 @@
 ### CORS Preflight Request to `compare-youself`
-OPTIONS https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself
+OPTIONS {{serverUrl}}/compare-yourself
 Accept: application/json
 
 ### POST to `compare-youself` - allow
-POST https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself
+POST {{serverUrl}}/compare-yourself
 Content-Type: application/json
 Accept: application/json
-Authorization: allow
+Authorization: Bearer {{idToken}}
 
 {
   "age": {{$randomInt}},
@@ -15,10 +15,10 @@ Authorization: allow
 }
 
 ### POST to `compare-youself` - deny
-POST https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself
+POST {{serverUrl}}/compare-yourself
 Content-Type: application/json
 Accept: application/json
-Authorization: deny
+Authorization: Bearer fake
 
 {
   "age": {{$randomInt}},
@@ -27,7 +27,7 @@ Authorization: deny
 }
 
 ### POST to `compare-youself` - Unauthorized
-POST https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself
+POST {{serverUrl}}/compare-yourself
 Content-Type: application/json
 Accept: application/json
 
@@ -38,18 +38,21 @@ Accept: application/json
 }
 
 ### CORS Preflight request to results
-OPTIONS https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself/fooBuzzBar
+OPTIONS {{serverUrl}}/compare-yourself/fooBuzzBar
 Accept: application/json
 
 ### GET all results
-GET https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself/all
+GET {{serverUrl}}/compare-yourself/all
 Accept: application/json
+Authorization: Bearer {{idToken}}
 
 ### GET single result
-GET https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself/single
+GET {{serverUrl}}/compare-yourself/single
 Accept: application/json
+Authorization: Bearer {{idToken}}
 
 ### GET wrong type
-GET https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev/compare-yourself/absend
+GET {{serverUrl}}/compare-yourself/absend
 Accept: application/json
+Authorization: Bearer {{idToken}}
 
