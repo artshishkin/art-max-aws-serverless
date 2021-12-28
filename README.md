@@ -269,3 +269,23 @@ Change Request Mapping Template
         -  Enable
         -  Target bucket: `s3://net.shyshkin.compare-yourself.logs`
 
+#####  117. Setting up a CloudFront Distribution
+
+CloudFront console
+-  Create Distribution
+    -  Origin
+        -  Origin domain: `net.shyshkin.compare-yourself.s3.eu-north-1.amazonaws.com`
+        -  Origin path: (no need to specify - we use root level)
+        -  S3 bucket access: `Don't use OAI (bucket must allow public access)`
+    -  Default cache behavior
+        -  Compress objects automatically: Yes
+        -  Viewer protocol policy: HTTP and HTTPS
+        -  Allowed HTTP methods:  GET, HEAD
+        -  Restrict viewer access: No
+    -  Settings
+        -  Default root object: `index.html`
+        -  Standard logging: ~~On~~ Off for now
+            -  ~~S3 bucket: net.shyshkin.compare-yourself.logs.s3.amazonaws.com~~
+            -  ~~Log Prefix: cdn~~
+    -  Create distribution
+
