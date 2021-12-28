@@ -328,4 +328,22 @@ Now we can access our web app through:
     -  `https://d2qloak3q1qgw2.cloudfront.net` - HTTPS CloudFront
     -  `http://d2qloak3q1qgw2.cloudfront.net` - HTTP CloudFront
     -  `http://net.shyshkin.compare-yourself.s3-website.eu-north-1.amazonaws.com/` - HTTP S3
+
+#####  Restricting access only to HTTPS
+
+1.  CloudFront -> Distributions -> E9NR9NDP1VAVW
+    -  Behaviours -> 0 -> Edit ->
+    -  Viewer protocol policy: `Redirect HTTP to HTTPS`
+    -  Save changes
+2.  Test
+    -  `http://compare-yourself.shyshkin.net` -> Redirects to HTTPS Route 53
+    -  `https://compare-yourself.shyshkin.net` - HTTPS Route 53
+    -  `https://d2qloak3q1qgw2.cloudfront.net` - HTTPS CloudFront
+    -  `http://d2qloak3q1qgw2.cloudfront.net` -> Redirects to HTTPS CloudFront
+    -  **BUT**   
+    -  `http://net.shyshkin.compare-yourself.s3-website.eu-north-1.amazonaws.com/` - HTTP S3
+
+
+
+
        
