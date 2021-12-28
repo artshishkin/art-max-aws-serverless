@@ -3,7 +3,7 @@ info:
   title: "compare-yourself"
   description: "AWS Serverless APIs &amp; Apps - A Complete Introduction - Tutorial\
     \ from Maximilian Schwarzmüller (Udemy)"
-  version: "2021-12-27T20:24:06Z"
+  version: "2021-12-28T06:45:01Z"
 servers:
 - url: "https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/{basePath}"
   variables:
@@ -114,11 +114,6 @@ paths:
         required: true
         schema:
           type: "string"
-      - name: "accessToken"
-        in: "query"
-        required: true
-        schema:
-          type: "string"
       responses:
         "200":
           description: "200 response"
@@ -132,8 +127,6 @@ paths:
                 $ref: "#/components/schemas/CompareDataArray"
       security:
       - compare-yourself-user-pool: []
-      x-amazon-apigateway-request-validator: "Validate query string parameters and\
-        \ headers"
       x-amazon-apigateway-integration:
         httpMethod: "POST"
         uri: "arn:aws:apigateway:eu-north-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-north-1:392971033516:function:cy-get-data/invocations"
@@ -148,8 +141,8 @@ paths:
                 \  \"income\" : $elem.income\n} \n#if($foreach.hasNext),#end\n#end\n\
                 ]"
         requestTemplates:
-          application/json: "{\n  \"type\" : \"$input.params('type')\",\n  \"accessToken\"\
-            \ : \"$input.params('accessToken')\"\n}"
+          application/json: "{\n  \"type\" : \"$input.params('type')\",\n  \"userId\"\
+            \ : \"$context.authorizer.claims.sub\"\n}"
         passthroughBehavior: "when_no_templates"
         contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
@@ -238,6 +231,3 @@ x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false
     validateRequestBody: true
-  Validate query string parameters and headers:
-    validateRequestParameters: true
-    validateRequestBody: false

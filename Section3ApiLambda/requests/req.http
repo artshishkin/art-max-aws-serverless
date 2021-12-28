@@ -47,7 +47,7 @@ Accept: application/json
 Authorization: Bearer {{idToken}}
 
 ### GET single result
-GET {{serverUrl}}/compare-yourself/single?accessToken={{accessToken}}
+GET {{serverUrl}}/compare-yourself/single
 Accept: application/json
 Authorization: Bearer {{idToken}}
 

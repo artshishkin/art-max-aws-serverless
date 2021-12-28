@@ -67,8 +67,6 @@ export class CompareService {
         return;
       }
       const idToken = session.getIdToken().getJwtToken();
-      const accessToken = session.getAccessToken().getJwtToken();
-      queryParam = `?accessToken=${accessToken}`
 
       this.http.get(`${this.serverUrl}/compare-yourself/${urlParam}${queryParam}`, {
         headers: new Headers({'Authorization': idToken})
