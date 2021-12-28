@@ -289,3 +289,9 @@ CloudFront console
             -  ~~Log Prefix: cdn~~
     -  Create distribution
 
+#####  118. Finishing the CloudFront Setup
+
+Now we can access our web app through:
+-  `http://net.shyshkin.compare-yourself.s3-website.eu-north-1.amazonaws.com/` - HTTP
+-  `https://d2qloak3q1qgw2.cloudfront.net` - HTTPS CloudFront
+-  `http://d2qloak3q1qgw2.cloudfront.net` - HTTP CloudFront
