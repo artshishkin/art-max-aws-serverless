@@ -343,6 +343,14 @@ Now we can access our web app through:
     -  **BUT**   
     -  `http://net.shyshkin.compare-yourself.s3-website.eu-north-1.amazonaws.com/` - HTTP S3
 
+##### 10.1 Fix an error when accessing `https://compare-yourself.shyshkin.net/compare` (#10)
+
+-  CloudFront -> Distributions -> E9NR9NDP1VAVW
+-  Error Pages -> Create Custom Error Page
+    -  HTTP Error code: 403
+    -  Customize error response: Yes
+        -  Response page path: `/index.html`
+        -  HTTP Response code: 200
 
 
 
