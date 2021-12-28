@@ -295,3 +295,37 @@ Now we can access our web app through:
 -  `http://net.shyshkin.compare-yourself.s3-website.eu-north-1.amazonaws.com/` - HTTP
 -  `https://d2qloak3q1qgw2.cloudfront.net` - HTTPS CloudFront
 -  `http://d2qloak3q1qgw2.cloudfront.net` - HTTP CloudFront
+
+#####  122. Connecting a Domain to a CloudFront Distribution
+
+1. AWS Certificate Manager
+    -  Request public certificate
+        -  Domain names:        
+            -  `compare-yourself.shyshkin.net`
+        -  Request
+        -  Validate:
+            -  Create Record in Route 53
+            -  Create records. 
+            -  The Certificate status page should open with a status banner reporting Successfully created DNS records.
+            -  Your new certificate might continue to display a status of Pending validation for up to 30 minutes.
+2. CloudFront
+    -  Distributions -> `E9NR9NDP1VAVW` ->
+        -  General -> Settings ->
+        -  Alternate domain name (CNAME): `compare-yourself.shyshkin.net`
+        -  Custom SSL certificate: `compare-yourself.shyshkin.net (86934808-b93b-493e-b4e4-e6f5cab3b00e)`
+        -  Save changes
+3. Route 53 Console
+    -  Hosted Zones -> `shyshkin.net` -> Create a record
+        -  Record name: `compare-yourself.shyshkin.net`
+        -  Record type: A
+        -  Alias
+        -  Route traffic to
+            -  Alias to CloudFront distribution
+            -  `d2qloak3q1qgw2.cloudfront.net`
+4. Test
+    -  `http://compare-yourself.shyshkin.net` - HTTP Route 53          
+    -  `https://compare-yourself.shyshkin.net` - HTTPS Route 53
+    -  `https://d2qloak3q1qgw2.cloudfront.net` - HTTPS CloudFront
+    -  `http://d2qloak3q1qgw2.cloudfront.net` - HTTP CloudFront
+    -  `http://net.shyshkin.compare-yourself.s3-website.eu-north-1.amazonaws.com/` - HTTP S3
+       
