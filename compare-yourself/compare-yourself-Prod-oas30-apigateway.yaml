@@ -3,7 +3,7 @@ info:
   title: "compare-yourself"
   description: "AWS Serverless APIs &amp; Apps - A Complete Introduction - Tutorial\
     \ from Maximilian Schwarzmüller (Udemy)"
-  version: "2021-12-25T15:00:44Z"
+  version: "2021-12-28T06:45:01Z"
 servers:
 - url: "https://6zlxd52ys6.execute-api.eu-north-1.amazonaws.com/{basePath}"
   variables:
@@ -29,6 +29,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Empty"
+      security:
+      - compare-yourself-user-pool: []
       x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
         httpMethod: "POST"
@@ -40,8 +42,9 @@ paths:
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestTemplates:
-          application/json: "#set($userData=$input.path('$'))\n{\n\"age\" : \"$userData.age\"\
-            ,\n\"height\" : \"$userData.height\",\n\"income\" : \"$userData.income\"\
+          application/json: "#set($userData=$input.path('$'))\n{\n    \"userId\":\
+            \ \"$context.authorizer.claims.sub\",\n    \"age\" : \"$userData.age\"\
+            ,\n    \"height\" : \"$userData.height\",\n    \"income\" : \"$userData.income\"\
             \n}"
         passthroughBehavior: "when_no_templates"
         contentHandling: "CONVERT_TO_TEXT"
@@ -58,6 +61,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Empty"
+      security:
+      - compare-yourself-user-pool: []
       x-amazon-apigateway-integration:
         httpMethod: "POST"
         uri:
@@ -67,7 +72,10 @@ paths:
             statusCode: "200"
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
-        passthroughBehavior: "when_no_match"
+        requestTemplates:
+          application/json: "{\n  \"userId\": \"$context.authorizer.claims.sub\"\n\
+            }"
+        passthroughBehavior: "when_no_templates"
         contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
     options:
@@ -119,6 +127,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CompareDataArray"
+      security:
+      - compare-yourself-user-pool: []
       x-amazon-apigateway-integration:
         httpMethod: "POST"
         uri:
@@ -134,7 +144,8 @@ paths:
                 \  \"income\" : $elem.income\n} \n#if($foreach.hasNext),#end\n#end\n\
                 ]"
         requestTemplates:
-          application/json: "{\n  \"type\" : \"$input.params('type')\"\n}"
+          application/json: "{\n  \"type\" : \"$input.params('type')\",\n  \"userId\"\
+            \ : \"$context.authorizer.claims.sub\"\n}"
         passthroughBehavior: "when_no_templates"
         contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
@@ -209,6 +220,16 @@ components:
             type: "integer"
           income:
             type: "integer"
+  securitySchemes:
+    compare-yourself-user-pool:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
+      x-amazon-apigateway-authtype: "cognito_user_pools"
+      x-amazon-apigateway-authorizer:
+        providerARNs:
+        - "arn:aws:cognito-idp:eu-north-1:392971033516:userpool/eu-north-1_lhbmRfObN"
+        type: "cognito_user_pools"
 x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false

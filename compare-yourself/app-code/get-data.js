@@ -35,10 +35,12 @@ exports.handler = (event, context, callback) => {
 
     } else if (type === 'single') {
 
+        const userId = event.userId;
+
         let params = {
             Key: {
                 "UserId": {
-                    S: "user_0.24392722883765883"
+                    S: userId
                 }
             },
             TableName: tableName

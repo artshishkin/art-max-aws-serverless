@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  serverUrl: 'https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev'
+  serverUrl: 'https://6zlxd52ys6.execute-api.eu-north-1.amazonaws.com/Prod'
+  // serverUrl: 'https://9cxvvjl4d0.execute-api.eu-north-1.amazonaws.com/dev'
 };

@@ -8,7 +8,7 @@ exports.handler = (event, context, callback) => {
     let params = {
         Key: {
             "UserId": {
-                S: "user_0.3609675717962979"
+                S: event.userId
             }
         },
         TableName: tableName

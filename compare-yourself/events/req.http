@@ -2,15 +2,39 @@
 OPTIONS {{serverUrl}}/compare-yourself
 Accept: application/json
 
-### POST to `compare-youself`
+### POST to `compare-youself` - allow
+POST {{serverUrl}}/compare-yourself
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{idToken}}
+
+{
+  "age": {{$randomInt}},
+  "height": {{$randomInt}},
+  "income": {{$randomInt}}
+}
+
+### POST to `compare-youself` - deny
+POST {{serverUrl}}/compare-yourself
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer fake
+
+{
+  "age": {{$randomInt}},
+  "height": {{$randomInt}},
+  "income": {{$randomInt}}
+}
+
+### POST to `compare-youself` - Unauthorized
 POST {{serverUrl}}/compare-yourself
 Content-Type: application/json
 Accept: application/json
 
 {
-  "age": 42,
-  "height": 190,
-  "income": 1500
+  "age": {{$randomInt}},
+  "height": {{$randomInt}},
+  "income": {{$randomInt}}
 }
 
 ### CORS Preflight request to results
@@ -20,12 +44,19 @@ Accept: application/json
 ### GET all results
 GET {{serverUrl}}/compare-yourself/all
 Accept: application/json
+Authorization: Bearer {{idToken}}
 
 ### GET single result
 GET {{serverUrl}}/compare-yourself/single
 Accept: application/json
+Authorization: Bearer {{idToken}}
 
 ### GET wrong type - 400
 GET {{serverUrl}}/compare-yourself/absend
 Accept: application/json
+Authorization: Bearer {{idToken}}
 
+### DELETE user's result
+DELETE {{serverUrl}}/compare-yourself
+Accept: application/json
+Authorization: Bearer {{idToken}}
