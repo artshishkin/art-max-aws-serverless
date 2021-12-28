@@ -5,7 +5,7 @@ info:
     \ from Maximilian Schwarzmüller (Udemy)"
   version: "2021-12-28T06:45:01Z"
 servers:
-- url: "https://6zlxd52ys6.execute-api.eu-north-1.amazonaws.com/{basePath}"
+- url: "https://46g3v1nw4g.execute-api.eu-north-1.amazonaws.com/{basePath}"
   variables:
     basePath:
       default: "/Prod"
