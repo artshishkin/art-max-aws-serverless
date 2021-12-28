@@ -230,5 +230,31 @@ Change Request Mapping Template
 -  `npm run build`
 -  Upload -> with default settings
 
+#####  113. Turning a S3 Bucket into a Static Webserver
 
-
+-  Permissions
+    -  Block public access -> Edit
+    -  Block all public access -> untick all -> Save changes -> confirm
+-  Bucket policy
+    -  Learn more -> Bucket policies -> Bucket policy examples
+    -  [Granting read-only permission to an anonymous user](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-use-case-2)
+```json
+{
+  "Version":"2012-10-17",
+  "Statement":[
+    {
+      "Sid":"PublicRead",
+      "Effect":"Allow",
+      "Principal": "*",
+      "Action":["s3:GetObject","s3:GetObjectVersion"],
+      "Resource":["arn:aws:s3:::net.shyshkin.compare-yourself/*"]
+    }
+  ]
+}
+```    
+-  Static web site
+    -  Properties -> Static website hosting -> Edit
+    -  Enable
+    -  Index document: `index.html`
+    -  Error document: `index.html`
+    -  Save
