@@ -258,3 +258,14 @@ Change Request Mapping Template
     -  Index document: `index.html`
     -  Error document: `index.html`
     -  Save
+
+#####  114. Setting up Logging
+
+-  Create bucket for logs
+    -  Name: `net.shyshkin.compare-yourself.logs`
+-  Set up logging for `net.shyshkin.compare-yourself` bucket
+    -  `net.shyshkin.compare-yourself` -> Properties
+    -  Server access logging -> Edit
+        -  Enable
+        -  Target bucket: `s3://net.shyshkin.compare-yourself.logs`
+
