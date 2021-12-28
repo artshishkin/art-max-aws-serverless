@@ -352,6 +352,36 @@ Now we can access our web app through:
         -  Response page path: `/index.html`
         -  HTTP Response code: 200
 
+#####  Restricting Access to S3 Bucket
 
-
+-  [How do I use my CloudFront distribution to restrict access to an Amazon S3 bucket?](https://aws.amazon.com/premiumsupport/knowledge-center/cloudfront-access-to-amazon-s3/)
+-  CloudFront -> Origins -> net.shyshkin.compare-yourself... -> Edit
+    -  S3 bucket access    
+    -  Yes use OAI (bucket can restrict access to only CloudFront)
+    -  Origin access identity -> Create new OAI
+    -  Bucket policy -> Yes, update the bucket policy
+-  Modify Bucket Policy
+    -  S3 -> `net.shyshkin.compare-yourself` -> Permissions -> Bucket policy -> Edit
+    -  Delete Statement with "Sid": "PublicRead"
+    -  Leave only    
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "2",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E116E1N2RAPRW5"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::net.shyshkin.compare-yourself/*"
+        }
+    ]
+}
+```
+-  Test
+    -  `http://net.shyshkin.compare-yourself.s3-website.eu-north-1.amazonaws.com/` -> 403 Forbidden
+    -  `https://compare-yourself.shyshkin.net` - HTTPS Route 53
+    -  `https://d2qloak3q1qgw2.cloudfront.net` - HTTPS CloudFront
        
