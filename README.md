@@ -224,3 +224,11 @@ Change Request Mapping Template
     -  Name: `net.shyshkin.compare-yourself`
     -  AWS Region: `eu-north-1`
     -  Other -> Defaults
+
+#####  111. Uploading the Web App to the Bucket
+
+-  `npm run build`
+-  Upload -> with default settings
+
+
+
