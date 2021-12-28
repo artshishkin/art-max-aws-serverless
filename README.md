@@ -216,7 +216,11 @@ Change Request Mapping Template
 }
 ```
 
+####  Section 6: Hosting a Serverless SPA
 
+#####  110. Creating a S3 Bucket
 
-
-
+-  Create bucket
+    -  Name: `net.shyshkin.compare-yourself`
+    -  AWS Region: `eu-north-1`
+    -  Other -> Defaults
