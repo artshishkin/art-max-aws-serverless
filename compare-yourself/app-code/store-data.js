@@ -3,25 +3,24 @@ const dynamodb = new AWS.DynamoDB({region: 'eu-north-1', apiVersion: '2012-08-10
 
 const tableName = process.env.COMPARE_YOURSELF_TABLE;
 
-exports.handler = (event, context, callback) => {
+exports.handler = async (event, context) => {
 
-    const params = {
-        TableName: tableName,
-        Item: {
-            'UserId': {S: event.userId},
-            'Age': {N: event.age},
-            'Height': {N: event.height},
-            'Income': {N: event.income}
-        }
-    };
+    try {
+        const params = {
+            TableName: tableName,
+            Item: {
+                'UserId': {S: event.userId},
+                'Age': {N: event.age},
+                'Height': {N: event.height},
+                'Income': {N: event.income}
+            }
+        };
 
-    dynamodb.putItem(params, function (err, data) {
-        if (err) {
-            console.log("Error", err);
-            callback(err);
-        } else {
-            console.log("Success", data);
-            callback(null, data);
-        }
-    });
+        const data = await dynamodb.putItem(params).promise();
+        console.log("Success", data);
+        return data;
+    } catch (err) {
+        console.log("Error", err);
+        return err;
+    }
 };
