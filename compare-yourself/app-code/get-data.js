@@ -1,6 +1,5 @@
-const AWS = require('aws-sdk');
-AWS.config.update({region: 'eu-north-1'});
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+const {DynamoDBClient, ScanCommand, GetItemCommand} = require("@aws-sdk/client-dynamodb");
+const dynamodb = new DynamoDBClient({region: 'eu-north-1'});
 
 const tableName = process.env.COMPARE_YOURSELF_TABLE;
 
@@ -16,15 +15,16 @@ exports.handler = async (event, context) => {
                 TableName: tableName
             };
 
-            const data = await dynamodb.scan(params).promise();
+            const scanCommand = new ScanCommand(params);
+            const data = await dynamodb.send(scanCommand);
 
             console.log(data);
 
             const items = data.Items.map(item => {
                     return {
-                        age: +item.Age,
-                        height: +item.Height,
-                        income: +item.Income
+                        age: +item.Age.N,
+                        height: +item.Height.N,
+                        income: +item.Income.N
                     };
                 }
             );
@@ -36,17 +36,18 @@ exports.handler = async (event, context) => {
 
             let params = {
                 Key: {
-                    "UserId": userId
+                    "UserId": {S: userId}
                 },
                 TableName: tableName
             };
 
-            const data = await dynamodb.get(params).promise();
+            const getItemCommand = new GetItemCommand(params);
+            const data = await dynamodb.send(getItemCommand);
             console.log(data);
             const item = {
-                age: data.Item.Age,
-                height: data.Item.Height,
-                income: data.Item.Income
+                age: +data.Item.Age.N,
+                height: +data.Item.Height.N,
+                income: +data.Item.Income.N
             };
             return [item];
         } else {
