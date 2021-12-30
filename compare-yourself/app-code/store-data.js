@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB({region: 'eu-north-1', apiVersion: '2012-08-10'});
+AWS.config.update({region: 'eu-north-1'});
+const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 const tableName = process.env.COMPARE_YOURSELF_TABLE;
 
@@ -9,14 +10,14 @@ exports.handler = async (event, context) => {
         const params = {
             TableName: tableName,
             Item: {
-                'UserId': {S: event.userId},
-                'Age': {N: event.age},
-                'Height': {N: event.height},
-                'Income': {N: event.income}
+                'UserId': event.userId,
+                'Age': +event.age,
+                'Height': +event.height,
+                'Income': +event.income
             }
         };
 
-        const data = await dynamodb.putItem(params).promise();
+        const data = await dynamodb.put(params).promise();
         console.log("Success", data);
         return data;
     } catch (err) {
