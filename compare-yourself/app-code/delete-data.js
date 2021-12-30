@@ -1,6 +1,5 @@
-const AWS = require('aws-sdk');
-AWS.config.update({region: 'eu-north-1'});
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+const {DynamoDBClient, DeleteItemCommand} = require("@aws-sdk/client-dynamodb");
+const dynamodb = new DynamoDBClient({region: 'eu-north-1'});
 
 const tableName = process.env.COMPARE_YOURSELF_TABLE;
 
@@ -8,13 +7,14 @@ exports.handler = async (event, context) => {
 
     let params = {
         Key: {
-            "UserId": event.userId
+            "UserId": {S: event.userId}
         },
         TableName: tableName
     };
 
     try {
-        const data = await dynamodb.delete(params).promise();
+        const deleteItemCommand = new DeleteItemCommand(params);
+        const data = await dynamodb.send(deleteItemCommand);
         console.log("Item deleted: ");
         console.log(data);
         return data;
