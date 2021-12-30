@@ -43,8 +43,8 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestTemplates:
           application/json: "#set($userData=$input.path('$'))\n{\n    \"userId\":\
-            \ \"$context.authorizer.claims.sub\",\n    \"age\" : $userData.age\
-            ,\n    \"height\" : $userData.height,\n    \"income\" : $userData.income\
+            \ \"$context.authorizer.claims.sub\",\n    \"age\" : \"$userData.age\"\
+            ,\n    \"height\" : \"$userData.height\",\n    \"income\" : \"$userData.income\"\
             \n}"
         passthroughBehavior: "when_no_templates"
         contentHandling: "CONVERT_TO_TEXT"
