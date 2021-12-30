@@ -1,28 +1,25 @@
 const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB({region: 'eu-north-1', apiVersion: '2012-08-10'});
+AWS.config.update({region: 'eu-north-1'});
+const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 const tableName = process.env.COMPARE_YOURSELF_TABLE;
 
-exports.handler = (event, context, callback) => {
+exports.handler = async (event, context) => {
 
     let params = {
         Key: {
-            "UserId": {
-                S: event.userId
-            }
+            "UserId": event.userId
         },
         TableName: tableName
     };
 
-    dynamodb.deleteItem(params, function (err, data) {
-        if (err) {
-            console.log("Error", err);
-            callback(err);
-        } else {
-            console.log("Item deleted: ");
-            console.log(data);
-            callback(null, data);
-        }
-    });
-
-};
+    try {
+        const data = await dynamodb.delete(params).promise();
+        console.log("Item deleted: ");
+        console.log(data);
+        return data;
+    } catch (err) {
+        console.log("Error", err);
+        return err;
+    }
+}
