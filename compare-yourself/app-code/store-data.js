@@ -11,9 +11,9 @@ exports.handler = async (event, context) => {
             TableName: tableName,
             Item: {
                 'UserId': event.userId,
-                'Age': +event.age,
-                'Height': +event.height,
-                'Income': +event.income
+                'Age': event.age,
+                'Height': event.height,
+                'Income': event.income
             }
         };
 
