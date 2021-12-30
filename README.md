@@ -384,4 +384,10 @@ Now we can access our web app through:
     -  `http://net.shyshkin.compare-yourself.s3-website.eu-north-1.amazonaws.com/` -> 403 Forbidden
     -  `https://compare-yourself.shyshkin.net` - HTTPS Route 53
     -  `https://d2qloak3q1qgw2.cloudfront.net` - HTTPS CloudFront
-       
+
+####  #4 Migrate JavaScript SDK to version 3
+
+Examples:
+-  [Calling DynamoDB from Lambda in Node.js](https://docs.amplify.aws/guides/functions/dynamodb-from-js-lambda/q/platform/js/#getting-an-item-by-primary-key-in-dynamodb-from-lambda)
+-  [DynamoDB CRUD with NodeJS and Lambda](https://dev.to/rajandmr/dynamodb-crud-with-nodejs-and-lambda-inn)
+

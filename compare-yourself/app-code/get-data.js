@@ -1,70 +1,63 @@
 const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB({region: 'eu-north-1', apiVersion: '2012-08-10'});
+AWS.config.update({region: 'eu-north-1'});
+const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 const tableName = process.env.COMPARE_YOURSELF_TABLE;
 
-exports.handler = (event, context, callback) => {
+exports.handler = async (event, context) => {
 
     const type = event.type;
 
     let response;
+    try {
+        if (type === 'all') {
 
-    if (type === 'all') {
+            const params = {
+                TableName: tableName
+            };
 
-        const params = {
-            TableName: tableName
-        };
+            const data = await dynamodb.scan(params).promise();
 
-        dynamodb.scan(params, function (err, data) {
-            if (err) {
-                console.log("Error", err);
-                callback(err);
-            } else {
+            console.log(data);
 
-                const items = data.Items.map(item => {
-                        return {
-                            age: +item.Age.N,
-                            height: +item.Height.N,
-                            income: +item.Income.N
-                        };
-                    }
-                );
-                callback(null, items);
-            }
-        });
-
-    } else if (type === 'single') {
-
-        const userId = event.userId;
-
-        let params = {
-            Key: {
-                "UserId": {
-                    S: userId
+            const items = data.Items.map(item => {
+                    return {
+                        age: +item.Age,
+                        height: +item.Height,
+                        income: +item.Income
+                    };
                 }
-            },
-            TableName: tableName
-        };
+            );
+            return items;
 
-        dynamodb.getItem(params, function (err, data) {
-            if (err) {
-                console.log("Error", err);
-                callback(err);
-            } else {
-                const item = {
-                    age: +data.Item.Age.N,
-                    height: +data.Item.Height.N,
-                    income: +data.Item.Income.N
-                };
-                callback(null, [item]);
-            }
-        });
+        } else if (type === 'single') {
 
-    } else {
-        response = {
-            statusCode: 400,
-            body: 'Wrong type parameter: ' + type + '. Must be `all` or `single`.'
-        };
-        callback(null, response);
+            const userId = event.userId;
+
+            let params = {
+                Key: {
+                    "UserId": userId
+                },
+                TableName: tableName
+            };
+
+            const data = await dynamodb.get(params).promise();
+            console.log(data);
+            const item = {
+                age: data.Item.Age,
+                height: data.Item.Height,
+                income: data.Item.Income
+            };
+            return [item];
+        } else {
+            response = {
+                statusCode: 400,
+                body: 'Wrong type parameter: ' + type + '. Must be `all` or `single`.'
+            };
+            return response;
+        }
+    } catch (err) {
+        console.log("Error", err);
+        return err;
     }
 };
