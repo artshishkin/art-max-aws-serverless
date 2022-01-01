@@ -22,32 +22,13 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: Prod
-      Name: compare-youself-lambdaless
+      Name: compare-yourself-lambdaless
       Description: Compare Yourself API Lambdaless
       DefinitionBody:
         Fn::Transform:
           Name: AWS::Include
           Parameters:
             Location: compare-yourself-lambdaless-Prod-oas30-apigateway.yaml
-
-  StoreDataFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: store-data.handler
-      Policies:
-        - Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - 'dynamodb:PutItem'
-              Resource: !GetAtt CompareYourselfTable.Arn
-      Events:
-        StoreData:
-          Type: Api
-          Properties:
-            RestApiId: !Ref CompareYourselfRestApi
-            Path: /compare-yourself
-            Method: post
 
   DeleteDataFunction:
     Type: AWS::Serverless::Function

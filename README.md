@@ -391,3 +391,28 @@ Examples:
 -  [Calling DynamoDB from Lambda in Node.js](https://docs.amplify.aws/guides/functions/dynamodb-from-js-lambda/q/platform/js/#getting-an-item-by-primary-key-in-dynamodb-from-lambda)
 -  [DynamoDB CRUD with NodeJS and Lambda](https://dev.to/rajandmr/dynamodb-crud-with-nodejs-and-lambda-inn)
 
+####  #5 Provide Lambda-free solution for API-DynamoDB interaction
+
+#####  5.3 Replace store-data lambda function with direct DynamoDB PutItem call 
+
+```json
+#set($userData=$input.path('$'))
+{
+  "TableName": "compare-yourself-lambdaless-CompareYourselfTable-1ODYP8HFZOF7J",
+  "Item": {
+    "UserId": {"S": "$context.authorizer.claims.sub"},
+    "Age": {"N": "$userData.age"},
+    "Height": {"N": "$userData.height"},
+    "Income": {"N": "$userData.income"}
+  }
+}
+```
+Test with
+```json
+{
+"age": 3,
+"height":3,
+"income":2000
+}
+```
+

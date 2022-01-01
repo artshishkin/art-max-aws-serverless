@@ -1,11 +1,10 @@
 openapi: "3.0.1"
 info:
   title: "compare-yourself-lambdaless"
-  description: "AWS Serverless APIs &amp; Apps - A Complete Introduction - Tutorial\
-    \ from Maximilian Schwarzmüller (Udemy)"
+  description: "Compare Yourself API Lambdaless"
   version: "2021-12-28T06:45:01Z"
 servers:
-- url: "https://46g3v1nw4g.execute-api.eu-north-1.amazonaws.com/{basePath}"
+- url: "https://plwd238pc5.execute-api.eu-north-1.amazonaws.com/{basePath}"
   variables:
     basePath:
       default: "/Prod"
@@ -33,21 +32,24 @@ paths:
       - compare-yourself-user-pool: []
       x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
+        credentials:
+          Fn::GetAtt: CompareYourselfAPIGatewayRole.Arn
         httpMethod: "POST"
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${StoreDataFunction.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:dynamodb:action/PutItem"
         responses:
           default:
             statusCode: "200"
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestTemplates:
-          application/json: "#set($userData=$input.path('$'))\n{\n    \"userId\":\
-            \ \"$context.authorizer.claims.sub\",\n    \"age\" : \"$userData.age\"\
-            ,\n    \"height\" : \"$userData.height\",\n    \"income\" : \"$userData.income\"\
-            \n}"
+          application/json: "#set($userData=$input.path('$'))\n{\n    \"TableName\"\
+            : \"compare-yourself-lambdaless-CompareYourselfTable-1ODYP8HFZOF7J\",\n\
+            \    \"Item\": {\n        \"UserId\": {\"S\": \"$context.authorizer.claims.sub\"\
+            },\n        \"Age\": {\"N\": \"$userData.age\"},\n        \"Height\":\
+            \ {\"N\": \"$userData.height\"},\n        \"Income\": {\"N\": \"$userData.income\"\
+            }\n    }\n}"
         passthroughBehavior: "when_no_templates"
-        contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
     delete:
       responses:
@@ -195,12 +197,15 @@ components:
       - "income"
       type: "object"
       properties:
-        age:
-          type: "integer"
-        height:
-          type: "integer"
         income:
           type: "integer"
+          format: "int32"
+        age:
+          type: "integer"
+          format: "int32"
+        height:
+          type: "integer"
+          format: "int32"
     Empty:
       title: "Empty Schema"
       type: "object"
@@ -214,12 +219,15 @@ components:
         - "income"
         type: "object"
         properties:
-          age:
-            type: "integer"
-          height:
-            type: "integer"
           income:
             type: "integer"
+            format: "int32"
+          age:
+            type: "integer"
+            format: "int32"
+          height:
+            type: "integer"
+            format: "int32"
   securitySchemes:
     compare-yourself-user-pool:
       type: "apiKey"
