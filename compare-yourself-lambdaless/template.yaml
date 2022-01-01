@@ -1,0 +1,100 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  compare-yourself-lambdaless
+
+  SAM Template for compare-yourself-lambdaless
+  
+Globals:
+  Function:
+    Timeout: 3
+    CodeUri: app-code/
+    Runtime: nodejs14.x
+    Architectures:
+      - x86_64
+    Environment:
+      Variables:
+        COMPARE_YOURSELF_TABLE: !Ref CompareYourselfTable
+
+Resources:
+
+  CompareYourselfRestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Name: compare-youself-lambdaless
+      Description: Compare Yourself API Lambdaless
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: compare-yourself-lambdaless-Prod-oas30-apigateway.yaml
+
+  StoreDataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: store-data.handler
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:PutItem'
+              Resource: !GetAtt CompareYourselfTable.Arn
+      Events:
+        StoreData:
+          Type: Api
+          Properties:
+            RestApiId: !Ref CompareYourselfRestApi
+            Path: /compare-yourself
+            Method: post
+
+  DeleteDataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: delete-data.handler
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:DeleteItem'
+              Resource: !GetAtt CompareYourselfTable.Arn
+      Events:
+        DeleteData:
+          Type: Api
+          Properties:
+            RestApiId: !Ref CompareYourselfRestApi
+            Path: /compare-yourself
+            Method: delete
+
+  GetDataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: get-data.handler
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref CompareYourselfTable
+      Events:
+        GetData:
+          Type: Api
+          Properties:
+            RestApiId: !Ref CompareYourselfRestApi
+            Path: /compare-yourself/{type}
+            Method: get
+
+  CompareYourselfTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: UserId
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+Outputs:
+  CompareYourselfRestApi:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${CompareYourselfRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/compare-yourself"
+
