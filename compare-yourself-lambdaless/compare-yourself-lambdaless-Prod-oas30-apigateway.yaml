@@ -70,17 +70,24 @@ paths:
       security:
       - compare-yourself-user-pool: []
       x-amazon-apigateway-integration:
+        credentials:
+          Fn::GetAtt: CompareYourselfAPIGatewayRole.Arn
         httpMethod: "POST"
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteDataFunction.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:dynamodb:action/DeleteItem"
         responses:
           default:
             statusCode: "200"
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestTemplates:
-          application/json: "{\n  \"userId\": \"$context.authorizer.claims.sub\"\n\
-            }"
+          application/json:
+            Fn::Sub:
+              - "{\n  \"TableName\": \"${tableName}\"\
+                ,\n  \"Key\": { \n    \"UserId\": {\"S\": \"$context.authorizer.claims.sub\"\
+                }\n  }\n}"
+              - tableName:
+                  Ref: CompareYourselfTable
         passthroughBehavior: "when_no_templates"
         contentHandling: "CONVERT_TO_TEXT"
         type: "aws"

@@ -30,25 +30,6 @@ Resources:
           Parameters:
             Location: compare-yourself-lambdaless-Prod-oas30-apigateway.yaml
 
-  DeleteDataFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: delete-data.handler
-      Policies:
-        - Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - 'dynamodb:DeleteItem'
-              Resource: !GetAtt CompareYourselfTable.Arn
-      Events:
-        DeleteData:
-          Type: Api
-          Properties:
-            RestApiId: !Ref CompareYourselfRestApi
-            Path: /compare-yourself
-            Method: delete
-
   GetDataFunction:
     Type: AWS::Serverless::Function
     Properties:

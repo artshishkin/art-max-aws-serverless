@@ -416,3 +416,15 @@ Test with
 }
 ```
 
+#####  5.5 Replace delete-data lambda function with direct DynamoDB DeleteItem call
+
+```json
+{
+  "TableName": "compare-yourself-lambdaless-CompareYourselfTable-1ODYP8HFZOF7J",
+  "Key": {
+    "UserId": {"S": "$context.authorizer.claims.sub"}
+  }
+}
+```
+
+
