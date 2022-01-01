@@ -8,3 +8,4 @@ s3_prefix = "compare-yourself-lambdaless"
 region = "eu-north-1"
 capabilities = "CAPABILITY_IAM"
 image_repositories = []
+parameter_overrides = "CognitoUserPoolARN=\"arn:aws:cognito-idp:eu-north-1:392971033516:userpool/eu-north-1_lhbmRfObN\""
