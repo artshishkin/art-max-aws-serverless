@@ -427,4 +427,28 @@ Test with
 }
 ```
 
+#####  5.6 Splitting GET Endpoint into Single and All - Get Single Data
+
+Integration Request
+```json
+{
+  "TableName": "compare-yourself-lambdaless-CompareYourselfTable-1ODYP8HFZOF7J",
+  "Key": {
+    "UserId": {"S": "$context.authorizer.claims.sub"}
+  }
+}
+```
+
+Integration Response
+```json
+#set($inputRoot = $input.path('$'))
+[
+  {
+    "income" : $inputRoot.Item.Income.N,
+    "age" : $inputRoot.Item.Age.N,
+    "height" : $inputRoot.Item.Height.N
+  }
+]
+```
+
 
