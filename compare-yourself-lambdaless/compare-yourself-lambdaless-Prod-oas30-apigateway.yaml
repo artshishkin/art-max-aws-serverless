@@ -43,12 +43,16 @@ paths:
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestTemplates:
-          application/json: "#set($userData=$input.path('$'))\n{\n    \"TableName\"\
-            : \"compare-yourself-lambdaless-CompareYourselfTable-1ODYP8HFZOF7J\",\n\
-            \    \"Item\": {\n        \"UserId\": {\"S\": \"$context.authorizer.claims.sub\"\
-            },\n        \"Age\": {\"N\": \"$userData.age\"},\n        \"Height\":\
-            \ {\"N\": \"$userData.height\"},\n        \"Income\": {\"N\": \"$userData.income\"\
-            }\n    }\n}"
+          application/json:
+            Fn::Sub:
+              - "#set($userData=$input.path('$'))\n{\n    \"TableName\"\
+                : \"${tableName}\",\n\
+                \    \"Item\": {\n        \"UserId\": {\"S\": \"$context.authorizer.claims.sub\"\
+                },\n        \"Age\": {\"N\": \"$userData.age\"},\n        \"Height\":\
+                \ {\"N\": \"$userData.height\"},\n        \"Income\": {\"N\": \"$userData.income\"\
+                }\n    }\n}"
+              - tableName:
+                  Ref: CompareYourselfTable
         passthroughBehavior: "when_no_templates"
         type: "aws"
     delete:
