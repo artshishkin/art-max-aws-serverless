@@ -191,14 +191,8 @@ paths:
           application/json: "{\"statusCode\": 200}"
         passthroughBehavior: "when_no_match"
         type: "mock"
-  /compare-yourself/{type}:
+  /compare-yourself/all:
     get:
-      parameters:
-      - name: "type"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
       responses:
         "200":
           description: "200 response"
@@ -213,32 +207,30 @@ paths:
       security:
       - compare-yourself-user-pool: []
       x-amazon-apigateway-integration:
+        credentials:
+          Fn::GetAtt: CompareYourselfAPIGatewayRole.Arn
         httpMethod: "POST"
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetDataFunction.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:dynamodb:action/Scan"
         responses:
           default:
             statusCode: "200"
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
             responseTemplates:
-              application/json: "#set($inputRoot = $input.path('$'))\n[\n\n#foreach($elem\
-                \ in $inputRoot)\n {\n  \"age\" : $elem.age,\n  \"height\" : $elem.height,\n\
-                \  \"income\" : $elem.income\n} \n#if($foreach.hasNext),#end\n#end\n\
-                ]"
+              application/json: "#set($inputRoot = $input.path('$'))\n[\n#foreach($item\
+                \ in $inputRoot.Items)\n {\n  \"income\" : $item.Income.N,\n  \"age\"\
+                \ : $item.Age.N,\n  \"height\" : $item.Height.N\n} \n#if($foreach.hasNext),#end\n\
+                #end\n]"
         requestTemplates:
-          application/json: "{\n  \"type\" : \"$input.params('type')\",\n  \"userId\"\
-            \ : \"$context.authorizer.claims.sub\"\n}"
+          application/json:
+            Fn::Sub:
+              - "{  \"TableName\": \"${tableName}\"}"
+              - tableName:
+                  Ref: CompareYourselfTable
         passthroughBehavior: "when_no_templates"
-        contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
     options:
-      parameters:
-      - name: "type"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
       responses:
         "200":
           description: "200 response"

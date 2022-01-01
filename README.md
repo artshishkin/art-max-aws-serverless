@@ -451,4 +451,28 @@ Integration Response
 ]
 ```
 
+#####  5.7 Splitting GET Endpoint into Single and All - Get All Data
+
+Integration Request
+```json
+{
+  "TableName": "compare-yourself-lambdaless-CompareYourselfTable-1ODYP8HFZOF7J"
+}
+```
+
+Integration Response
+```json
+#set($inputRoot = $input.path('$'))
+[
+#foreach($item in $inputRoot.Items)
+ {
+  "income" : $item.Income.N,
+  "age" : $item.Age.N,
+  "height" : $item.Height.N
+} 
+#if($foreach.hasNext),#end
+#end
+]
+```
+
 

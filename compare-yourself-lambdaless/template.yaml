@@ -7,11 +7,6 @@ Description: >
   
 Globals:
   Function:
-    Timeout: 3
-    CodeUri: app-code/
-    Runtime: nodejs14.x
-    Architectures:
-      - x86_64
     Environment:
       Variables:
         COMPARE_YOURSELF_TABLE: !Ref CompareYourselfTable
@@ -29,21 +24,6 @@ Resources:
           Name: AWS::Include
           Parameters:
             Location: compare-yourself-lambdaless-Prod-oas30-apigateway.yaml
-
-  GetDataFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: get-data.handler
-      Policies:
-        - DynamoDBReadPolicy:
-            TableName: !Ref CompareYourselfTable
-      Events:
-        GetData:
-          Type: Api
-          Properties:
-            RestApiId: !Ref CompareYourselfRestApi
-            Path: /compare-yourself/{type}
-            Method: get
 
   CompareYourselfTable:
     Type: AWS::Serverless::SimpleTable
