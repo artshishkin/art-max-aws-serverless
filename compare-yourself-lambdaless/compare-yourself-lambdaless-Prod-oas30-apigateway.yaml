@@ -286,21 +286,7 @@ components:
       title: "CompareDataArray"
       type: "array"
       items:
-        required:
-        - "age"
-        - "height"
-        - "income"
-        type: "object"
-        properties:
-          income:
-            type: "integer"
-            format: "int32"
-          age:
-            type: "integer"
-            format: "int32"
-          height:
-            type: "integer"
-            format: "int32"
+        $ref: "#/components/schemas/CompareData"
   securitySchemes:
     compare-yourself-user-pool:
       type: "apiKey"
