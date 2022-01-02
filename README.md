@@ -519,7 +519,31 @@ API Gateway console
     -  visit `localhost:3000`
     -  visit `localhost:3000/users`
     -  visit `localhost:3000/usersERROR` -> 404 page
-
-
-
-
+2.  Install additional package
+    -  `npm install --save aws-serverless-express`
+3.  Create `lambda.js`
+    -  code from [AWS Serverless Express](https://www.npmjs.com/package/aws-serverless-express)
+4.  Bundle it
+    -  zip files (without folder)
+5.  Create Lambda
+    -  Lambda Console -> create function
+    -  Name: `serverless-express`
+    -  Upload from zip file
+    -  Handler: lambda.handler
+    -  Timeout: increase to 10 seconds
+6.  Create API Gateway
+    -  name: `serverless-express`
+    -  Actions:
+        -  Create Method: ANY
+        -  Integration type: Lambda Function
+        -  Use Lambda Proxy integration
+        -  Lambda Function: `serverless-express`
+    -  Create Resource:
+        -  Configure as proxy resource
+        -  Lambda Function: `serverless-express`
+7.  Deploy API
+    -  New Stage: `dev`
+8.  Visit
+    -  `https://zj05j4z4ad.execute-api.eu-north-1.amazonaws.com/dev`
+    -  `https://zj05j4z4ad.execute-api.eu-north-1.amazonaws.com/dev/users`
+9.  Styles missing -> need different location (not like server)     
