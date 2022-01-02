@@ -511,5 +511,15 @@ API Gateway console
 -  `sam deploy --guided`
     -  Parameter AppBucketName []: art-cool-bucket
 
+#####  128. Running Node/ Express Apps via Lambda + API Gateway
+
+1.  Run locally
+    -  `cd express-serverless`
+    -  `npm start`
+    -  visit `localhost:3000`
+    -  visit `localhost:3000/users`
+    -  visit `localhost:3000/usersERROR` -> 404 page
+
+
 
 
