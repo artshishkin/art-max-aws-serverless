@@ -152,6 +152,7 @@ paths:
         type: "mock"
   /compare-yourself:
     post:
+      description: "Create new user data"
       requestBody:
         content:
           application/json:
@@ -197,6 +198,7 @@ paths:
         passthroughBehavior: "when_no_templates"
         type: "aws"
     delete:
+      description: "Delete own user data"
       responses:
         "200":
           description: "200 response"
