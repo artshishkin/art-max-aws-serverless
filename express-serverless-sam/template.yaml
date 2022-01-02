@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  express-serverless-sam
+
+  Sample SAM Template for express-serverless-sam
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+
+  ExpressServerlessApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Name: express-serverless-sam
+      Description: Express Serverless API
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: express-serverless-sam-Prod-oas30-apigateway.yaml
+
+  ExpressServerlessFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app-code/
+      Handler: lambda.handler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Events:
+        AnyRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExpressServerlessApi
+            Path: /
+            Method: any
+        AnyProxy:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExpressServerlessApi
+            Path: /{proxy+}
+            Method: any
+
+Outputs:
+  ExpressServerlessApi:
+    Description: "API Gateway endpoint URL for Prod stage for Express Serverless Api"
+    Value: !Sub "https://${ExpressServerlessApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+
