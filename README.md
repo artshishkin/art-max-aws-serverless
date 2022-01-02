@@ -475,4 +475,28 @@ Integration Response
 ]
 ```
 
+####  Section 7: Beyond the Basics - An Outlook
 
+#####  125. Documenting an API
+
+API Gateway console
+1. Way ONE
+    -  Documentation
+    -  Create Documentation Part
+        -  Type: `Method`
+        -  Path: `/compare-yourself/all`
+        -  Method: `GET`
+        -  `"description": "Allows us to get all users' data"`
+2.  Way TWO
+    -  Resources -> `/compare-yourself/single` -> GET
+    -  Actions -> Edit Method Documentation
+        -  `"description": "Allows us to get single user's data"`        
+3.  Deploy API
+    -  Export OpenAPI 3 -> **NO** Documentation Added
+4.  Publish documentation
+    -  Documentation
+    -  Publish Documentation
+        -  Stage: Prod
+        -  Version: 1.0-art
+        -  Description: Compare Yourself API version 1.0
+    -  Export -> OpenAPI 3 + API Gateway Extensions

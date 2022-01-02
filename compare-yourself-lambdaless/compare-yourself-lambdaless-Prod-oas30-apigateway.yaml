@@ -11,6 +11,7 @@ servers:
 paths:
   /compare-yourself/single:
     get:
+      description: "Allows us to get single user's data"
       responses:
         "200":
           description: "200 response"
@@ -23,7 +24,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/CompareDataArray"
       security:
-        - compare-yourself-user-pool: []
+      - compare-yourself-user-pool: []
       x-amazon-apigateway-integration:
         credentials:
           Fn::GetAtt: CompareYourselfAPIGatewayRole.Arn
@@ -37,8 +38,8 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
             responseTemplates:
               application/json: "#set($item = $input.path('$.Item'))\n[\n  {\n   \
-                \ \"income\" : $item.Income.N,\n    \"age\" : $item.Age.N,\n\
-                \    \"height\" : $item.Height.N\n  }\n]"
+                \ \"income\" : $item.Income.N,\n    \"age\" : $item.Age.N,\n    \"\
+                height\" : $item.Height.N\n  }\n]"
         requestTemplates:
           application/json:
             Fn::Sub:
@@ -81,6 +82,7 @@ paths:
         type: "mock"
   /compare-yourself/all:
     get:
+      description: "Allows us to get all users' data"
       responses:
         "200":
           description: "200 response"
@@ -93,7 +95,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/CompareDataArray"
       security:
-        - compare-yourself-user-pool: []
+      - compare-yourself-user-pool: []
       x-amazon-apigateway-integration:
         credentials:
           Fn::GetAtt: CompareYourselfAPIGatewayRole.Arn
@@ -107,9 +109,9 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
             responseTemplates:
               application/json: "#set($items = $input.path('$.Items'))\n[\n#foreach($item\
-                \ in $items)\n {\n  \"income\" : $item.Income.N,\n  \"age\"\
-                \ : $item.Age.N,\n  \"height\" : $item.Height.N\n} \n#if($foreach.hasNext),#end\n\
-                #end\n]"
+                \ in $items)\n {\n  \"income\" : $item.Income.N,\n  \"age\" : $item.Age.N,\n\
+                \  \"height\" : $item.Height.N\n} \n#if($foreach.hasNext),#end\n#end\n\
+                ]"
         requestTemplates:
           application/json:
             Fn::Sub:
@@ -297,6 +299,91 @@ components:
         providerARNs:
         - Ref: CognitoUserPoolARN
         type: "cognito_user_pools"
+x-amazon-apigateway-documentation:
+  version: "1.0-art"
+  createdDate: "2022-01-02T09:13:04Z"
+  documentationParts:
+  - location:
+      type: "API"
+    properties:
+      info:
+        description: "Compare Yourself API Lambdaless"
+  - location:
+      type: "METHOD"
+      path: "/compare-yourself/all"
+      method: "GET"
+    properties:
+      description: "Allows us to get all users' data"
+  - location:
+      type: "METHOD"
+      path: "/compare-yourself/single"
+      method: "GET"
+    properties:
+      description: "Allows us to get single user's data"
+  - location:
+      type: "MODEL"
+      name: "CompareData"
+    properties:
+      title: "CompareData"
+  - location:
+      type: "MODEL"
+      name: "CompareDataArray"
+    properties:
+      title: "CompareDataArray"
+  - location:
+      type: "MODEL"
+      name: "Empty"
+    properties:
+      title: "Empty Schema"
+  - location:
+      type: "RESPONSE"
+      path: "/compare-yourself/all"
+      method: "GET"
+      statusCode: "200"
+    properties:
+      description: "200 response"
+  - location:
+      type: "RESPONSE"
+      path: "/compare-yourself/all"
+      method: "OPTIONS"
+      statusCode: "200"
+    properties:
+      description: "200 response"
+  - location:
+      type: "RESPONSE"
+      path: "/compare-yourself/single"
+      method: "GET"
+      statusCode: "200"
+    properties:
+      description: "200 response"
+  - location:
+      type: "RESPONSE"
+      path: "/compare-yourself/single"
+      method: "OPTIONS"
+      statusCode: "200"
+    properties:
+      description: "200 response"
+  - location:
+      type: "RESPONSE"
+      path: "/compare-yourself"
+      method: "DELETE"
+      statusCode: "200"
+    properties:
+      description: "200 response"
+  - location:
+      type: "RESPONSE"
+      path: "/compare-yourself"
+      method: "OPTIONS"
+      statusCode: "200"
+    properties:
+      description: "200 response"
+  - location:
+      type: "RESPONSE"
+      path: "/compare-yourself"
+      method: "POST"
+      statusCode: "200"
+    properties:
+      description: "200 response"
 x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false
