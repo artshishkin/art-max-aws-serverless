@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  s3-trigger
+
+  Sample SAM Template for s3-trigger
+  
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  ObserveBucketFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app-code/
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Events:
+        CreateObjectInBucket:
+          Type: S3
+          Properties:
+            Bucket: !Ref MyBucket
+            Events: s3:ObjectCreated:*
+
+  MyBucket:
+    Type: AWS::S3::Bucket
+
