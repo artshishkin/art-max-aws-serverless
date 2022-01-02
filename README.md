@@ -500,3 +500,16 @@ API Gateway console
         -  Version: 1.0-art
         -  Description: Compare Yourself API version 1.0
     -  Export -> OpenAPI 3 + API Gateway Extensions
+
+#####  126.2 Other AWS Lambda Triggers - S3 Events - through SAM
+
+-  `sam init` -> 1 -> 1 -> 1
+    -  project name: `s3-trigger-sam`
+    -  5 - Quick Start: S3
+-  `cd s3-trigger-sam`
+-  `sam build`   
+-  `sam deploy --guided`
+    -  Parameter AppBucketName []: art-cool-bucket
+
+
+

@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "s3-trigger-sam"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1alt62pqr870u"
+s3_prefix = "s3-trigger-sam"
+region = "eu-north-1"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "AppBucketName=\"art-cool-bucket\""
+image_repositories = []
