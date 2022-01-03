@@ -547,3 +547,11 @@ API Gateway console
     -  `https://zj05j4z4ad.execute-api.eu-north-1.amazonaws.com/dev`
     -  `https://zj05j4z4ad.execute-api.eu-north-1.amazonaws.com/dev/users`
 9.  Styles missing -> need different location (not like server)     
+
+#####  137. Testing Serverless Apps with localstack
+
+[LocalStack](https://github.com/localstack/localstack)
+
+
+
+
